@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(app) {
-    var spotseeker = require('../controllers/spotseekerController');
+    var spotseekerList = require('../controllers/spotseekerController');
 
     // spotseeker Routes
     app.route('/spots')

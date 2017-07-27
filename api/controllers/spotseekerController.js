@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    SpotDB = mongoose.model('spotsdb');
+    SpotDB = mongoose.model('SpotDB');
 
 exports.list_all_spots = function(req, res) {
     SpotDB.find({}, function(err, spots) {

@@ -3,22 +3,54 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // EDIT SCHEMA TO MATCH SPOTSEEKER SERVER
+// _id is created by mongoDB
+// THIS IS A POOR IMPLEMENTATION -  make more specific
 var SpotDBSchema = new Schema({
+    id: {
+        type: String,
+        Required: 'REQUIRED: SPOT ID.'
+    },
+    etag: {
+        type: String
+    },
     name: {
         type: String,
-        Required: 'Kindly enter the name of the task'
+        Required: 'REQUIRED: SPOT NAME.'
     },
-    Created_date: {
+    types: {
+        type: [String]
+    },
+    location: {},
+    capacity: {
+        type: String
+    },
+    display_access_restrictions: {
+        type: String
+    },
+    images: {},
+    available_hours: {},
+    organization: {
+        type: String
+    },
+    manager: {
+        type: String
+    },
+    extended_info: {},
+    items: {},
+    last_modified: {
         type: Date,
         default: Date.now
     },
-    status: {
-        type: [{
-            type: String,
-            enum: ['pending', 'ongoing', 'completed']
-        }],
-        default: ['pending']
-    }
+    external_id: {
+        type: String
+    },
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
+});
+
+SpotDBSchema.virtual('uri').get(function() {
+    return "http://localhost:3000/spots/" + this._id;
 });
 
 module.exports = mongoose.model('SpotDB', SpotDBSchema);
