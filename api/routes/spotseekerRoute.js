@@ -3,6 +3,7 @@ module.exports = function(app) {
     var spotseekerList = require('../controllers/spotseekerController');
 
     // spotseeker Routes
+    // based on v1 for spotseeker
     app.route('/spots')
         .get(spotseekerList.list_all_spots)
         .post(spotseekerList.create_a_spot);
