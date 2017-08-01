@@ -51,7 +51,7 @@ var SpotDBSchema = new Schema({
 
 // FIX - make it dynamic
 SpotDBSchema.virtual('uri').get(function() {
-    return "http://coconut.aca.uw.edu:3000/spots/" + this._id;
+    return "http://coconut.aca.uw.edu:3000/api/v2/spot/" + this._id;
 });
 
 module.exports = mongoose.model('SpotDB', SpotDBSchema);
