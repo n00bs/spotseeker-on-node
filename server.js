@@ -5,8 +5,9 @@ var express = require('express'),
     SpotDB = require('./api/models/spotseekerModel'),
     bodyParser = require('body-parser');
 
+
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/SpotDB',  {
+mongoose.connect('mongodb://testspot:testpass@coconut.aca.uw.edu:27017/SpotDB', {
     useMongoClient: true
 });
 
