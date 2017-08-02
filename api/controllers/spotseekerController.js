@@ -14,18 +14,20 @@ exports.list_all_spots = function(request, response) {
 
 // Not highly developed yet.
 // A lot of filters still need to be added on to this.
+// incorporates experimental pagination.
 exports.get_spots_by_filter = function(request, response) {
     if (Object.keys(request.query).length === 0) {
         response.json({ message: "Empty filters are not allowed on spot search. Try requesting /all for all spots"});
     }
-    var processed = processor.process_filters(request.query);
-    var DEBUG = [processed, request.query];
-    response.send(DEBUG);
-    /*SpotDB.find({"extended_info.campus": {$in: ["tacoma", "bothell"]}}, function(error, spots) {
+    var query = processor.process_filters(request.query);
+    // experimental pagination
+    var limit_skip = processor.get_limit_and_skip(request.query);
+    //response.send(limit_skip);
+    SpotDB.find(query, function(error, spots) {
         if (error)
             response.send(error);
         response.json(spots);
-    });*/
+    }).skip(limit_skip["skip"]).limit(limit_skip["limit"]);
 };
 
 exports.create_a_spot = function(request, response) {
