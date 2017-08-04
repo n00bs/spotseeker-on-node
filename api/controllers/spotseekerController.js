@@ -18,16 +18,17 @@ exports.list_all_spots = function(request, response) {
 exports.get_spots_by_filter = function(request, response) {
     if (Object.keys(request.query).length === 0) {
         response.json({ message: "Empty filters are not allowed on spot search. Try requesting /all for all spots"});
+    } else {
+        var query = processor.process_filters(request.query);
+        // experimental pagination
+        var limit_skip = processor.get_limit_and_skip(request.query);
+        //response.send(limit_skip);
+        SpotDB.find(query, function(error, spots) {
+            if (error)
+                response.send(error);
+            response.json(spots);
+        }).skip(limit_skip["skip"]).limit(limit_skip["limit"]);
     }
-    var query = processor.process_filters(request.query);
-    // experimental pagination
-    var limit_skip = processor.get_limit_and_skip(request.query);
-    //response.send(limit_skip);
-    SpotDB.find(query, function(error, spots) {
-        if (error)
-            response.send(error);
-        response.json(spots);
-    }).skip(limit_skip["skip"]).limit(limit_skip["limit"]);
 };
 
 exports.create_a_spot = function(request, response) {
@@ -39,7 +40,7 @@ exports.create_a_spot = function(request, response) {
     });
 };
 
-
+// read spot by mongodb generated id
 exports.read_a_spot = function(request, response) {
     SpotDB.findById(request.params.spotId, function(error, spot) {
         if (error)
@@ -48,6 +49,14 @@ exports.read_a_spot = function(request, response) {
     });
 };
 
+// read spot by manual generated id
+exports.read_a_spot_by_id = function(request, response) {
+    SpotDB.findOne({"id": request.params.spotId}, function(error, spot) {
+        if (error)
+            response.send(error);
+        response.json(spot);
+    });
+};
 
 exports.update_a_spot = function(request, response) {
     SpotDB.findOneAndUpdate({_id: request.params.spotId}, request.body, {new: true}, function(error, spot) {
@@ -59,7 +68,7 @@ exports.update_a_spot = function(request, response) {
 
 
 exports.delete_a_spot = function(request, response) {
-    SpotDB.remove({_id: request.params.spotId}, function(error, spot) {
+    SpotDB.remove({}, function(error, spot) {
         if (error)
             response.send(error);
         response.json({ message: 'Spot successfully deleted' });

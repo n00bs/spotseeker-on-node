@@ -28,6 +28,9 @@ exports.process_filters = function(filters) {
     // "custom" points to a method to be executed with the value as a parameter and
     // return used as a search term.
     var map = {
+        "extended_info:campus": {
+            "filter": "extended_info.campus"
+        },
         "extended_info:app_type": {
             "filter": "extended_info.app_type"
         },
@@ -44,7 +47,7 @@ exports.process_filters = function(filters) {
             "custom": process_filters_capacity
         },
         "type": {
-            "filter": "types",
+            "filter": "type",
             "operator": "$in"
         },
         "building_name": {
