@@ -68,7 +68,7 @@ exports.update_a_spot = function(request, response) {
 
 
 exports.delete_a_spot = function(request, response) {
-    SpotDB.remove({}, function(error, spot) {
+    SpotDB.remove({_id: request.params.spotId}, function(error, spot) {
         if (error)
             response.send(error);
         response.json({ message: 'Spot successfully deleted' });
